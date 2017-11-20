@@ -12,6 +12,8 @@ This is my literate-programming file for generating my vimrc file.
 
     _"rest"
 
+    _"vim 15"
+
 [../.vimrc](# "save:")
 
 
@@ -40,6 +42,12 @@ Vundle proper
     Plugin 'vim-voom/VOoM'
     Plugin 'tpope/vim-markdown'
     Plugin 'Shutnik/jshint2.vim'
+
+Vim vinegar helps with navigating file structures. To fix a bug about the
+dash, modify the plugin with the vingear below. 
+
+
+
     Plugin 'tpope/vim-vinegar'
 
 Repeat allows plugin commands to be repeated
@@ -50,6 +58,14 @@ Surround allows one to surround something parentheses or tags and remove them:
 `cs'"` or `ds"` or `ysiw<em>`
     
     Plugin 'tpope/vim-surround'
+
+And for Ack stuff for searching [Ack](https://vimawesome.com/plugin/ack-vim)
+
+    Plugin 'mileszs/ack.vim'
+
+And this enables stuff for [fzf](https://github.com/junegunn/fzf.vim)
+
+    Plugin 'junegunn/fzf.vim'
 
 The rest of Vundle closing 
 
@@ -106,6 +122,12 @@ This seems to be just what one always has to be Vim
 
 Need to split all 
 
+Change the leader to a comma. Can also apply a bunch of leaders with one
+leader, then assign it and do with the other. Also showcmd will show that you
+ahve typed it. 
+
+    set runtimepath+=/usr/local/opt/fzf
+    let mapleader = ","
 
     set tabstop=4
     set shiftwidth=4
@@ -273,8 +295,7 @@ Need to split all
     "map tab to switch windows
     nnoremap <silent> <Tab> <C-w><C-w>
     "map yu to formatting current paragraph
-    nnoremap yu gqap 
-    nnoremap <leader>f gqap  
+    "nnoremap yu gqap 
     " ctrl tab closes window
     nnoremap <silent> <C-Tab> <C-w>c
     " grabbing last pasted stuff
@@ -317,4 +338,34 @@ commands get whacky.
     " automatically leave insert mode after 'updatetime' milliseconds of inaction
     " au CursorHoldI * stopinsert
 
+## Vim 15 
 
+Using [VIM after 15 years](https://statico.github.io/vim3.html)
+
+install fzf using brew  `brew install fzf`
+
+    nmap ; :Buffers<CR>
+    nmap <Leader>f :Files<CR>
+    nmap <Leader>t :Tags<CR>
+
+Install ag using `brew install the_silver_searcher`  [silver searcher](https://github.com/ggreer/the_silver_searcher)
+
+    let g:ackprg = 'ag --nogroup --nocolor --column'    
+
+
+## Vinegar
+
+To fix a bug, do the following: 
+
+replace 
+
+    let s:netrw_up = substitute(maparg('-', 'n'), '\c^:\%(<c-u>\)\=', '', '') 
+
+with 
+
+    if strpart(g:loaded_netrw, 1, strlen(g:loaded_netrw)) < 162 
+        let s:netrw_up = substitute(maparg('-', 'n'), '\c^:\%(<c-u>\)\=', '', '') 
+    else 
+        let s:netrw_up = substitute(maparg('<Plug>NetrwBrowseUpDir', 'n'), '\c^:\%(<c-u>\)\=', '', '') 
+    endif
+    
